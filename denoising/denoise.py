@@ -20,7 +20,7 @@ def wavelet(img, method = ' ', sigma = None):
     '''
     :param img:
     :param method: 'visu' or 'bayes'
-                    standard is bayes
+                    standard is visu
     :param sigma:
     :return:
     '''
@@ -28,16 +28,15 @@ def wavelet(img, method = ' ', sigma = None):
     if sigma == None:
         sigma = est_sigma(img)
 
-    if method == 'visu':
-        dumb = denoise_wavelet(img, multichannel=True, convert2ycbcr=True,
-                                    method='VisuShrink', mode='soft',
-                                    sigma=sigma, rescale_sigma=True)
-
-
-    else:
+    if method == 'bayes':
         dumb = denoise_wavelet(img, multichannel=True, convert2ycbcr=True,
                            method='BayesShrink', mode='soft',
                            rescale_sigma=True)
+
+    else:
+        dumb = denoise_wavelet(img, multichannel=True, convert2ycbcr=True,
+                               method='VisuShrink', mode='soft',
+                               sigma=sigma, rescale_sigma=True)
 
     return dumb
 
@@ -72,8 +71,7 @@ def bm3d(img, sigma = None ):
         dumb = cv.xphoto.bm3dDenoising(img)
         tock = time()
         print("Execute time = %.2f" % (tock - tic), "s")
-    dumb = np.clip(dumb, 0.0, 255.0)
-    dumb = dumb.astype('uint8')
+    dumb = np.clip(dumb, 0.0, 255.0).astype('uint8')
     return dumb
 
 
@@ -106,7 +104,10 @@ def band_reject(rgb, low, high = 'inf'):
     G = np.multiply(H, dft)
     img_back = np.fft.ifft2(G)
     img_back = np.real(img_back)
+    img_back = np.clip(img_back,0.0,255.0)
     image[:,:,0] = img_back
     dumb = cv.cvtColor(image, cv.COLOR_YCrCb2BGR)
+
+
     return dumb
 

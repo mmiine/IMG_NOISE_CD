@@ -2,7 +2,7 @@ import sys
 import argparse
 import cv2 as cv
 from denoising.addnoise import (gaussian, salt_pepper)
-from denoising.denoise import (bm3d, wavelet)
+from denoising.denoise import (bm3d, band_reject)
 
 
 parser = argparse.ArgumentParser('Test an image')
@@ -29,7 +29,7 @@ if __name__ == "__main__":
     elif mode == 'bm3d':
         dumb = bm3d(im)
     elif mode == 'wavelet':
-        dumb = wavelet(im)
+        dumb = band_reject(im,200,600)
 
     cv.imshow(str(mode),dumb)
     cv.waitKey(0)
