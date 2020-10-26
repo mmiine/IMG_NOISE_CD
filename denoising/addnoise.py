@@ -20,8 +20,9 @@ def salt_pepper(image, prob=0.01):
     ret, impulse_noise2 = cv.threshold(uniform_noise, 255 - prob * 255, 255, cv.THRESH_BINARY)
     impulse_noise2 = (impulse_noise2).astype(np.uint8)
 
-    impulse_noise1 = np.dstack([impulse_noise1] * 3)
-    impulse_noise2 = np.dstack([impulse_noise2] * 3)
+    if np.ndim(image) > 2:
+        impulse_noise1 = np.dstack([impulse_noise1] * 3)
+        impulse_noise2 = np.dstack([impulse_noise2] * 3)
 
     dumb = cv.add(image, impulse_noise1)
     dumb = cv.subtract(dumb, impulse_noise2)

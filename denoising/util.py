@@ -27,8 +27,9 @@ def idft(img):
 
 
 def noise_detect(noisy, smooth = None):
-    noisy = noisy[:,:,0]
-    if smooth == None:
+    if np.ndim(noisy) > 2:
+        noisy = noisy[:,:,0]
+    if smooth.any() == None:
         smooth = noisy[0:30,0:30]
     plt.figure()
     plt.subplot(221), plt.imshow(noisy, cmap='gray')
@@ -37,6 +38,7 @@ def noise_detect(noisy, smooth = None):
     plt.title('Smooth Part'), plt.xticks([]), plt.yticks([])
     plt.subplot(223), plt.hist(noisy.ravel(), 256, [0, 256])  # ; plt.show()
     plt.title('Noisy Image Histogram'), plt.xticks([]), plt.yticks([])
-    plt.subplot(224), plt.hist(smooth.ravel(), 256, [0, 256])  # ; plt.show()
+    f,_ = plt.subplot(224), plt.hist(smooth.ravel(), 256, [0, 256])  # ; plt.show()
     plt.title('Estimated Noise Distribution'), plt.xticks([]), plt.yticks([])
     plt.show()
+    return f

@@ -18,11 +18,11 @@ def nl_means(img,sw=21,h=3):
 
 def wavelet(img, method = ' ', sigma = None):
     '''
-    :param img:
+    :param img: noisy input image
     :param method: 'visu' or 'bayes'
                     standard is visu
     :param sigma:
-    :return:
+    :return: denoise output image
     '''
 
     if sigma == None:
@@ -41,14 +41,14 @@ def wavelet(img, method = ' ', sigma = None):
     return dumb
 
 
-def bilateral(img,d=5,ss=30,sc=30):
+def bilateral(img,d=5,ss=30,sc=10):
     '''
 
-    :param img:
-    :param d:
-    :param ss:
-    :param sc:
-    :return:
+    :param img: noisy input image
+    :param d: filter size, affects operation time
+    :param ss: sigma space. It changes window size, affect smoothness
+    :param sc: sigma color in other words sigma range. It affect on edge preserving principle
+    :return: denoised output image
     '''
     dumb = cv.bilateralFilter(img, d, ss, sc)
     return dumb
